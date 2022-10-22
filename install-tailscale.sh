@@ -7,11 +7,4 @@ cp -r tailscale tailscaled /render/
 
 mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale
 
-
-
-ENV GOTTY_BINARY https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_386.tar.gz
-
-RUN wget $GOTTY_BINARY -O gotty.tar.gz && \
-    tar -xzf gotty.tar.gz -C /usr/local/bin/ && \
-    rm gotty.tar.gz && \
-    chmod +x /usr/local/bin/gotty
+ 
