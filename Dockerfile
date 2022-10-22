@@ -24,6 +24,7 @@ RUN apt-get -qq update \
 
 
 ENV TERM=xterm
+ENV LANG=zh_CN.UTF-8
 ENV GOTTY_BINARY https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_386.tar.gz
 
 RUN wget $GOTTY_BINARY -O gotty.tar.gz && \
@@ -40,4 +41,4 @@ RUN /tmp/install-tailscale.sh && rm -r /tmp/*
 
 #CMD ./run-tailscale.sh
 ENTRYPOINT ["sh", "-c"]
-CMD ["/usr/local/bin/gotty --port ${PORT:-3000} --permit-write --reconnect tmux"]
+CMD ["/usr/local/bin/gotty --port ${PORT:-3000} --permit-write --reconnect /bin/bash"]
