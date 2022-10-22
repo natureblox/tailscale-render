@@ -7,6 +7,11 @@ RUN apt-get -qq update \
     ca-certificates \
     netcat \
     wget \
+    w3m \
+    tmux \
+    tmate \
+    curl \
+    jq \
     dnsutils \
   > /dev/null \
   && apt-get -qq clean \
