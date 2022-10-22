@@ -12,6 +12,9 @@ RUN apt-get -qq update \
     tmate \
     curl \
     jq \
+    locales \
+    neovim \
+    sqlite3 \
     dnsutils \
   > /dev/null \
   && apt-get -qq clean \
@@ -31,7 +34,7 @@ RUN wget $GOTTY_BINARY -O gotty.tar.gz && \
     tar -xzf gotty.tar.gz -C /usr/local/bin/ && \
     rm gotty.tar.gz && \
     chmod +x /usr/local/bin/gotty
-    
+RUN localedef -c -f UTF-8 -i zh_CN zh_CN.utf8 
     
 RUN echo "+search +short" > /root/.digrc
 COPY run-tailscale.sh /render/
