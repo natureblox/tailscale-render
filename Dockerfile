@@ -13,7 +13,8 @@ RUN apt-get -qq update \
     curl \
     jq \
     locales \
-    neovim \
+    nnn \
+    newsboat \
     sqlite3 \
     dnsutils \
   > /dev/null \
@@ -46,6 +47,15 @@ RUN cd /root/TMP && curl -L -o $LG_ARCHIVE $LG_GITHUB
 RUN cd /root/TMP && tar xzvf $LG_ARCHIVE && mv $LG /usr/local/bin/
 RUN rm -rf /root/TMP
 
+
+#neovim 
+ENV NVIM_BINARY https://github.com/neovim/neovim/releases/download/v0.8.0/nvim-linux64.deb
+
+RUN wget $NVIM_BINARY && \
+    apt install ./nvim-linux64.deb && \
+    rm nvim-linux.deb
+
+
 # Install Vim Plug.
 RUN curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
@@ -57,7 +67,8 @@ COPY ./config/ /root/.config/nvim/
 
 # Install Neovim extensions.
 RUN nvim --headless +PlugInstall +qall
-
+RUN mkdir /root/.newsboat/
+RUN touch /root/.newsboat/urls
 
 
 ENV TERM=xterm
