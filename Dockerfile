@@ -53,7 +53,7 @@ ENV NVIM_BINARY https://github.com/neovim/neovim/releases/download/v0.8.0/nvim-l
 
 RUN wget $NVIM_BINARY && \
     apt install ./nvim-linux64.deb && \
-    rm nvim-linux.deb
+    rm nvim-linux64.deb
 
 
 # Install Vim Plug.
