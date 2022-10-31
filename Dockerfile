@@ -1,6 +1,11 @@
 FROM debian:latest
 WORKDIR /render
 
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+RUN chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" |   tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
+
 RUN apt-get -qq update \
   && apt-get -qq install --upgrade -y --no-install-recommends \
     apt-transport-https \
@@ -15,6 +20,7 @@ RUN apt-get -qq update \
     locales \
     neovim \
     sqlite3 \
+    gh \
     dnsutils \
   > /dev/null \
   && apt-get -qq clean \
@@ -25,9 +31,34 @@ RUN apt-get -qq update \
   && :
 
 
+# Lazygit variables
+ARG LG='lazygit'
+ARG LG_GITHUB='https://github.com/jesseduffield/lazygit/releases/download/v0.34/lazygit_0.34_Linux_x86_64.tar.gz'
+ARG LG_ARCHIVE='lazygit.tar.gz'
+
+RUN mkdir -p /root/TMP
+
+# Install Lazygit from binary
+RUN cd /root/TMP && curl -L -o $LG_ARCHIVE $LG_GITHUB
+RUN cd /root/TMP && tar xzvf $LG_ARCHIVE && mv $LG /usr/local/bin/
+RUN rm -rf /root/TMP
+
+# Install Vim Plug.
+RUN curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Create directory for Neovim configuration files.
+RUN mkdir -p /root/.config/nvim
+
+# Copy Neovim configuration files.
+COPY ./config/ /root/.config/nvim/
+
+# Install Neovim extensions.
+RUN nvim --headless +PlugInstall +qall
+
+
 
 ENV TERM=xterm
-ENV LANG=zh_CN.UTF-8
+#ENV LANG=zh_CN.UTF-8
 ENV GOTTY_BINARY https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_386.tar.gz
 
 RUN wget $GOTTY_BINARY -O gotty.tar.gz && \
