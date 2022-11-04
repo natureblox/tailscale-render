@@ -48,7 +48,7 @@ RUN pip install tuir buku httpie yokadi
 ENV S_BINARY https://github.com/zquestz/s/releases/download/v0.6.7/s-linux_amd64.zip
 
 RUN wget $S_BINARY && \
-    unzip s-linux-amd64.zip -d /usr/local/bin/ && \
+    unzip s-linux_amd64.zip -d /usr/local/bin/ && \
     rm s-linux-amd64.zip && \
 
 
