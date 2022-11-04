@@ -17,6 +17,9 @@ RUN apt-get -qq update \
     newsboat \
     sqlite3 \
     dnsutils \
+    mdp \
+    unzip \
+    python3-distutils \
   > /dev/null \
   && apt-get -qq clean \
   && rm -rf \
@@ -34,6 +37,20 @@ RUN chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
 
 RUN apt update  \
     && apt install -y gh
+
+# install pip
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+      &&  python3 get-pip.py  \
+      && rm get-pip.py
+RUN pip install tuir buku httpie yokadi
+
+
+ENV S_BINARY https://github.com/zquestz/s/releases/download/v0.6.7/s-linux_amd64.zip
+
+RUN wget $S_BINARY && \
+    unzip s-linux-amd64.zip -d /usr/local/bin/ && \
+    rm s-linux-amd64.zip && \
+
 
 # Lazygit variables
 ARG LG='lazygit'
@@ -88,5 +105,7 @@ COPY install-tailscale.sh /tmp
 RUN /tmp/install-tailscale.sh && rm -r /tmp/*
 
 #CMD ./run-tailscale.sh
+
+COPY ./scripts/*.sh /render/
 ENTRYPOINT ["sh", "-c"]
 CMD ["/usr/local/bin/gotty --port ${PORT:-3000} --permit-write --reconnect /bin/bash"]
