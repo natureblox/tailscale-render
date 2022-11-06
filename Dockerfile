@@ -42,7 +42,7 @@ RUN apt update  \
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
       &&  python3 get-pip.py  \
       && rm get-pip.py
-RUN pip install tuir buku httpie yokadi
+RUN pip install tuir buku httpie yokadi jc howdoi visidata networkx
 
 
 ENV S_BINARY https://github.com/zquestz/s/releases/download/v0.6.7/s-linux_amd64.zip
@@ -50,7 +50,10 @@ ENV S_ARCHIVE='s-linux_amd64.zip'
 
 RUN wget $S_BINARY && \
     unzip s-linux_amd64.zip -d /usr/local/bin/ && \
-    rm $S_ARCHIVE
+    rm $S_ARCHIVE && \
+    mv /usr/local/bin/s-linux_amd64/s /usr/local/bin/
+
+RUN curl https://rclone.org/install.sh|bash
 
 
 # Lazygit variables
@@ -107,6 +110,8 @@ RUN /tmp/install-tailscale.sh && rm -r /tmp/*
 
 #CMD ./run-tailscale.sh
 
+RUN mkdir -p /root/.config/rclone/
+COPY ./scripts/rclone.conf /root/.config/rclone/
 COPY ./scripts/*.sh /render/
 ENTRYPOINT ["sh", "-c"]
 CMD ["/usr/local/bin/gotty --port ${PORT:-3000} --permit-write --reconnect /bin/bash"]
