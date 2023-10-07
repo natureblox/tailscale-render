@@ -37,10 +37,10 @@ RUN apt update  \
     && apt install -y gh
 
 # install pip
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-      &&  python3 get-pip.py  \
-      && rm get-pip.py
-RUN pip install tuir buku httpie yokadi jc howdoi visidata networkx
+#RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+#      &&  python3 get-pip.py  \
+#      && rm get-pip.py
+#RUN pip install tuir buku httpie yokadi jc howdoi visidata networkx
 
 
 ENV S_BINARY https://github.com/zquestz/s/releases/download/v0.6.7/s-linux_amd64.zip
