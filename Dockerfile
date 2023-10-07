@@ -1,4 +1,5 @@
-FROM debian:latest
+#FROM debian:latest
+FROM debian:bullseye
 WORKDIR /render
 
 RUN apt-get -qq update \
@@ -37,23 +38,24 @@ RUN apt update  \
     && apt install -y gh
 
 # install pip
-#RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-#      &&  python3 get-pip.py  \
-#      && rm get-pip.py
-#RUN pip install tuir buku httpie yokadi jc howdoi visidata networkx
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+      &&  python3 get-pip.py  \
+      && rm get-pip.py
+RUN pip install tuir buku httpie yokadi jc howdoi visidata networkx
 
 
 ENV S_BINARY https://github.com/zquestz/s/releases/download/v0.6.7/s-linux_amd64.zip
 ENV S_ARCHIVE='s-linux_amd64.zip'
 
-RUN wget $S_BINARY && \
+RUN wget -q $S_BINARY && \
     unzip s-linux_amd64.zip -d /usr/local/bin/ && \
     rm $S_ARCHIVE && \
     mv /usr/local/bin/s-linux_amd64/s /usr/local/bin/
 
-RUN wget https://localtonet.com/download/localtonet-linux-x64.zip && \
+RUN wget -q https://localtonet.com/download/localtonet-linux-x64.zip && \
     unzip localtonet-linux-x64.zip && \
-    rm localtonet-linux-x64.zip 
+    rm localtonet-linux-x64.zip && \
+    chmod +x localtonet
 
 RUN curl -fsSL https://bun.sh/install | bash
 
@@ -77,7 +79,7 @@ RUN rm -rf /root/TMP
 #neovim 
 ENV NVIM_BINARY https://github.com/neovim/neovim/releases/download/v0.8.0/nvim-linux64.deb
 
-RUN wget $NVIM_BINARY && \
+RUN wget -q $NVIM_BINARY && \
     apt install ./nvim-linux64.deb && \
     rm nvim-linux64.deb
 
@@ -101,7 +103,7 @@ ENV TERM=xterm
 #ENV LANG=zh_CN.UTF-8
 ENV GOTTY_BINARY https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_386.tar.gz
 
-RUN wget $GOTTY_BINARY -O gotty.tar.gz && \
+RUN wget -q $GOTTY_BINARY -O gotty.tar.gz && \
     tar -xzf gotty.tar.gz -C /usr/local/bin/ && \
     rm gotty.tar.gz && \
     chmod +x /usr/local/bin/gotty
