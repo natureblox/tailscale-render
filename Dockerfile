@@ -5,7 +5,6 @@ RUN apt-get -qq update \
   && apt-get -qq install --upgrade -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
-    netcat \
     wget \
     w3m \
     tmux \
@@ -25,8 +24,7 @@ RUN apt-get -qq update \
   && rm -rf \
     /var/lib/apt/lists/* \
     /tmp/* \
-    /var/tmp/* \
-  && :
+    /var/tmp/* 
 
 
 
@@ -55,7 +53,7 @@ RUN wget $S_BINARY && \
 
 RUN wget https://localtonet.com/download/localtonet-linux-x64.zip && \
     unzip localtonet-linux-x64.zip && \
-    rm localtonet-linux-x64.zip && \
+    rm localtonet-linux-x64.zip 
 
 RUN curl -fsSL https://bun.sh/install | bash
 
