@@ -53,6 +53,13 @@ RUN wget $S_BINARY && \
     rm $S_ARCHIVE && \
     mv /usr/local/bin/s-linux_amd64/s /usr/local/bin/
 
+RUN wget https://localtonet.com/download/localtonet-linux-x64.zip && \
+    unzip localtonet-linux-x64.zip && \
+    rm localtonet-linux-x64.zip && \
+
+RUN curl -fsSL https://bun.sh/install | bash
+
+
 RUN curl https://rclone.org/install.sh|bash
 
 
