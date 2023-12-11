@@ -10,6 +10,7 @@ RUN apt-get -qq update \
     w3m \
     tmux \
     tmate \
+    profanity \
     curl \
     jq \
     locales \
